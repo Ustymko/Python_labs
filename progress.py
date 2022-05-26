@@ -5,6 +5,7 @@ class Progress(Student):
     """
     Progress class, inherits Student class
     """
+
     def __init__(self, university_name: str, institute_abbreviation: str, branch: str, group_name_and_number: str,
                  full_name: str, middle_mark: float):
         """
