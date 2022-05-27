@@ -3,26 +3,9 @@ from typing import List
 import datetime
 
 
-class Person(ABC):
-    """
-    Abstract class Person, inherits ABC library
-    """
-
-    def __init__(self, first_name: str, last_name: str):
-        self._first_name = first_name
-        self._last_name = last_name
-
-    def __str__(self) -> str:
-        return f"{self._last_name} {self._first_name}"
-
-    @abstractmethod
-    def get_full_name(self) -> str:
-        return self._first_name + " " + self._last_name
-
-
 class Progress:
     """
-    Progress class, inherits Student class
+    Progress class
     """
 
     def __init__(self, this_term_middle_mark: float, zno_entrance_mark: float):
@@ -35,6 +18,23 @@ class Progress:
 
     def __str__(self) -> str:
         return f"This term: {self._this_term_middle_mark}, ZNO: {self._zno_entrance_mark}"
+
+
+class Person(ABC):
+    """
+    Abstract Person class, inherits ABC library
+    """
+
+    def __init__(self, first_name: str, last_name: str):
+        self._first_name = first_name
+        self._last_name = last_name
+
+    def __str__(self) -> str:
+        return f"{self._last_name} {self._first_name}"
+
+    @abstractmethod
+    def get_full_name(self) -> str:
+        return self._first_name + " " + self._last_name
 
 
 class Student(Person):
@@ -87,6 +87,9 @@ class Lead(Instructor):
 
 
 class Institution(ABC):
+    """
+    Abstract Institution class, inherits ABC library
+    """
     def __init__(self, name: str, people_amount: int):
         self._name = name
         self._people_amount = people_amount
@@ -108,7 +111,7 @@ class Institution(ABC):
 
 class Schedule:
     """
-    Schedule class, inherits Group class
+    Schedule class
     """
 
     def __init__(self, lessons_on_each_day: dict):
@@ -134,6 +137,9 @@ class Schedule:
 
 
 class InstitutionWithPeople(Institution, ABC):
+    """
+    Abstract InstitutionWithPeople class, inherits Institution class and ABC library
+    """
     def __init__(self, name: str, people_amount: int):
         super().__init__(name, people_amount)
 
@@ -143,6 +149,9 @@ class InstitutionWithPeople(Institution, ABC):
 
 
 class InstitutionWithInstitutions(Institution, ABC):
+    """
+    Abstract InstitutionWithInstitutions class, inherits Institution class and ABC library
+    """
     def __init__(self, name: str, people_amount: int):
         super().__init__(name, people_amount)
 
@@ -151,9 +160,9 @@ class InstitutionWithInstitutions(Institution, ABC):
         super()._people_amount += 1
 
 
-class Group(InstitutionWithPeople):
+class Group(InstitutionWithPeople, Institution):
     """
-    Group class, inherits Institute class
+    Group class, inherits InstitutionWithPeople and Institution classes
     """
 
     def __init__(self, name: str, people_amount: int, schedule: Schedule, monitor: Student, students: List[Student]):
@@ -177,6 +186,10 @@ class Group(InstitutionWithPeople):
 
 
 class Department(InstitutionWithPeople, Institution):
+    """
+    Department class, inherits InstitutionWithInstitutions and Institution classes
+    """
+
     def __init__(self, name: str, people_amount: int, address: str, instructors: List[Instructor]):
         super().__init__(name, people_amount)
         self._address = address
@@ -195,7 +208,7 @@ class Department(InstitutionWithPeople, Institution):
 
 class Faculty(InstitutionWithInstitutions, Institution):
     """
-    Institute class, inherits University
+    Institute class, inherits InstitutionWithInstitutions and Institution classes
     """
 
     def __init__(self, name: str, people_amount: int, branch: str, groups: List[Group], dean: Lead):
@@ -222,7 +235,7 @@ class Faculty(InstitutionWithInstitutions, Institution):
 
 class University(InstitutionWithInstitutions, Institution):
     """
-    University class
+    University class, inherits InstitutionWithInstitutions and Institution classes
     """
 
     def __init__(self, name: str, people_amount: int, rector: Lead, faculties: List[Faculty]) -> None:
@@ -270,6 +283,7 @@ def main():
     politechnic = University("LPNU", 50000, rector_politechnic, [ikta])
     ikta.print_how_massive_it_is()
     print(ikta.get_all_groups_in_str())
+    print(group_iot_11.get_schedule())
 
 
 if __name__ == "__main__":
